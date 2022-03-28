@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.2
+# v0.18.1
 
 using Markdown
 using InteractiveUtils
@@ -72,7 +72,7 @@ begin
 	
 	for n in 1:50:200
 		
-		# SEDT
+		# Squared Euclidean DT
 		x2 = boolean_indicator(rand([0, 1], n, n))
 		tfm2 = SquaredEuclidean(x2)
 		sedt = @benchmark transform($x2, $tfm2)
@@ -80,7 +80,7 @@ begin
 		push!(sedt_mean, BenchmarkTools.mean(sedt).time)
 		push!(sedt_std, BenchmarkTools.std(sedt).time)
 		
-		# SEDT threaded
+		# Squared Euclidean DT threaded
 		x3 = boolean_indicator(rand([0, 1], n, n))
 		tfm3 = SquaredEuclidean(x3)
 		nthreads = Threads.nthreads()
@@ -130,5 +130,5 @@ As you can see, for small arrays the multi-threading functionality doesn't offer
 # ╟─4d35a592-5b22-44ef-8823-9025ce054643
 # ╠═390323c4-25a3-4048-b5e8-9ff99422c304
 # ╠═9cbb098b-e5b4-45c1-8eeb-d8b3a91d565b
-# ╠═6ccf4414-c76a-475d-8091-2aa03f268382
+# ╟─6ccf4414-c76a-475d-8091-2aa03f268382
 # ╟─b88bea1c-73bd-40e5-8966-3e5af6c3a026

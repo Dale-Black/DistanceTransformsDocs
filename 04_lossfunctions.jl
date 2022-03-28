@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.2
+# v0.18.1
 
 using Markdown
 using InteractiveUtils
@@ -31,9 +31,9 @@ TableOfContents()
 # ╔═╡ 6e03547c-d9b6-4972-9574-7cb4f30948f9
 md"""
 ## Distance transforms + deep learning
-One area of recent interest in deep learning has been distance transform-based loss functions to directly reduce Hausdorff loss and other boundary specific loss metrics [D. Karimi and S. E. Salcudean](http://arxiv.org/abs/1904.10030).
+One area of recent interest in deep learning has been distance transform-based loss functions to directly reduce Hausdorff loss and other boundary-specific loss metrics [D. Karimi and S. E. Salcudean](http://arxiv.org/abs/1904.10030).
 
-This package can be utilized directly in various training loops, along with [Losers.jl](https://github.com/Dale-Black/Losers.jl) to train segmentation networks, like the common UNet architecture and directly reduce Hausdorff distance using the `hausdorff()` loss function.
+This package can be utilized directly in various training loops, along with [Losers.jl](https://github.com/Dale-Black/Losers.jl) to train segmentation networks, like the common UNet architecture, to directly reduce Hausdorff distance using the `hausdorff()` loss function.
 
 In practice, it is common to combine `hausdorff` with the `dice` loss function to help stabalize during training.
 
@@ -83,7 +83,7 @@ hausdorff(ŷ2, y2, ŷ2_dtm, y2_dtm)
 # ╔═╡ 5d1ac21a-8073-4817-869b-5500649e486f
 md"""
 ## GPU considerations
-When using distance transform-based loss functions for deep learning, one must consider GPUs. The benefit of DistanceTransforms.jl is that GPU compatible distance transform algorithms are ready to use, out-of-the-box. 
+When using distance transform-based loss functions for deep learning, one must consider GPUs for many real-world deep learning tasks. The benefit of DistanceTransforms.jl is that GPU compatible distance transform algorithms are ready to use, out-of-the-box. 
 
 We will look at how one would go about this, without actually calling a CUDA array from the CUDA.jl library.
 """
@@ -153,7 +153,7 @@ end
 # ╟─5398d829-ad81-4971-94b5-f87eeaaa381e
 # ╠═d9f9bd70-508d-11ec-1d5d-b3592d653992
 # ╠═44119707-2397-4e7f-83f7-f362eae6004f
-# ╟─6e03547c-d9b6-4972-9574-7cb4f30948f9
+# ╠═6e03547c-d9b6-4972-9574-7cb4f30948f9
 # ╠═2810025c-9940-4da2-a587-938c425f511e
 # ╠═dfc81bb5-29fa-46f2-a335-66f541205d22
 # ╠═89347efa-ee13-4c61-a4e6-3d4d1a77955d
