@@ -1,5 +1,5 @@
 # DistanceTransformsDocs
 
-Documentation repository for [DistanceTransforms.jl](https://github.com/Dale-Black/DistanceTransforms.jl), powered by glassnotebook.io
+[Documentation](https://glassnotebook.io/dashboard/repositories) for [DistanceTransforms.jl](https://github.com/Dale-Black/DistanceTransforms.jl), powered by glassnotebook.io
 
-[Documentation](https://glassnotebook.io/dashboard/repositories)
+[Documentation Link](https://glassnotebook.io/dashboard/repositories)

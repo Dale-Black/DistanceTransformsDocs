@@ -1,10 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.18.1
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 22c33fe6-4efd-11ec-351c-25a9d73ec50a
+# ╠═╡ show_logs = false
 begin
 	let
 		using Pkg

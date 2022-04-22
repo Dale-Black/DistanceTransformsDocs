@@ -1,10 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.18.1
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ d9f9bd70-508d-11ec-1d5d-b3592d653992
+# ╠═╡ show_logs = false
 begin
 	let
 		using Pkg
@@ -123,12 +124,13 @@ If we were to be running an actual training loop it might look something like th
 # Begin training loop
 for epoch in 1:max_epochs
 	step = 0
-	@show epoch
+    α = ...
+	@info epoch
 	
 	# Loop through training data
 	for (xs, ys) in train_loader
 		step += 1
-		@show step
+		@info step
 
 		# Send data to GPU
 		xs, ys = xs |> gpu, ys |> gpu		
@@ -137,10 +139,24 @@ for epoch in 1:max_epochs
 
 			# Apply distance transform using GPU compatible `SquaredEuclidean`
 			# Data will usually be 4D or 5D [x, y, (z), channel, batch]
-			ŷs, ys = boolean_indicator(ŷs), boolean_indicator(ys)
-			tfm1, tfm2 = SquaredEuclidean(ŷs), SquaredEuclidean(ys)
-			ŷs_dtm, ys_dtm = transform!(ŷs_dtm), transform!(ys_dtm)
-			loss = hausdorff(ŷs, ys, ŷs_dtm, ys_dtm)
+
+			ys_dtm = CuArray{Float32}(undef, size(ys))
+			ŷs_dtm = CuArray{Float32}(undef, size(ŷs))
+			for b in size(ys, 5)
+				for c in size(ys, 4)
+					for z in size(ys, 3)
+						bool_arr_gt = boolean_indicator(ys[:, :, z, c, b])
+						bool_arr_pred = boolean_indicator(ŷs[:, :, z, c, b])
+						tfm_gt = SquaredEuclidean(bool_arr_gt)
+						tfm_pred = SquaredEuclidean(bool_arr_pred)
+						ys_dtm[:, :, z, c, b] = transform!(bool_arr_gt, tfm_gt, threads)
+						ŷs_dtm[:, :, z, c, b] = transform!(bool_arr_pred, tfm_pred, threads)
+					end
+				end
+			end
+			hd_loss = hausdorff(ŷs, ys, ŷs_dtm, ys_dtm)
+			dice_loss = dice(ŷs, ys)
+			loss = α*dice_loss + (1-α)*hausdorff_loss
 			return loss
 		end
 		Flux.update!(optimizer, ps, gs)
@@ -153,7 +169,7 @@ end
 # ╟─5398d829-ad81-4971-94b5-f87eeaaa381e
 # ╠═d9f9bd70-508d-11ec-1d5d-b3592d653992
 # ╠═44119707-2397-4e7f-83f7-f362eae6004f
-# ╠═6e03547c-d9b6-4972-9574-7cb4f30948f9
+# ╟─6e03547c-d9b6-4972-9574-7cb4f30948f9
 # ╠═2810025c-9940-4da2-a587-938c425f511e
 # ╠═dfc81bb5-29fa-46f2-a335-66f541205d22
 # ╠═89347efa-ee13-4c61-a4e6-3d4d1a77955d
@@ -170,4 +186,4 @@ end
 # ╠═dde2505d-1a69-4201-a75a-e29a62197163
 # ╠═d2a987a3-f44c-4239-9e96-d83ae16c265e
 # ╠═90467d7a-785d-44d3-92bc-9d05bcb5f5b4
-# ╟─43e694a4-bbd5-4072-a4de-0ea65b16c906
+# ╠═43e694a4-bbd5-4072-a4de-0ea65b16c906
