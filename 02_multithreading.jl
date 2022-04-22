@@ -1,10 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.18.1
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 0469b379-82a6-4d53-9b52-262c04c7d6ba
+# ╠═╡ show_logs = false
 begin
 	let
 		using Pkg
@@ -55,6 +56,21 @@ tfm = SquaredEuclidean(bool_array)
 
 # ╔═╡ e85546b9-03f0-4a1c-abd4-cd7a86d3fe80
 sq_euc_transform = transform!(bool_array, tfm, threads)
+
+# ╔═╡ 6b45ebe1-fad6-46b7-b571-e392c377684c
+md"""
+For note: In three dimensions, one can simply loop through the array depth-wise and return the distance transform to a pre-allocated empty array. Below is an example of how users might go about this
+
+```julia
+array3D = cat(array, array, dims=3)
+sq_euc_transform3D = Array{Float32}(undef, size(array3D))
+for d in 1:size(array3D, 3)
+	bool_arr3D = boolean_indicator(array3D[:, :, d])
+	tfm3D = SquaredEuclidean(bool_arr3D)
+	sq_euc_transform3D[:, :, d] = transform!(bool_arr3D, tfm3D, threads)
+end
+```
+"""
 
 # ╔═╡ 4d35a592-5b22-44ef-8823-9025ce054643
 md"""
@@ -119,6 +135,9 @@ As you can see, for small arrays the multi-threading functionality doesn't offer
 One might wonder why, if multi-threading is so beneficial, GPUs wouldn't be utilized. For most libraries, many would answer that question with a demonstration of the added complexity when going from regular programming to GPU programming and why it's not practical, but DistanceTransforms.jl is a pure Julia package. This means that GPUs are readily available with minimal code change, so the next [tutorial](link ...) will showcase this exact use case and why both end-users and developers might benefit from this.
 """
 
+# ╔═╡ de54a3a1-21b6-4af7-97bf-fae1e45f9859
+
+
 # ╔═╡ Cell order:
 # ╟─a77f43f6-4fb4-11ec-2a50-3181f56e24e0
 # ╠═0469b379-82a6-4d53-9b52-262c04c7d6ba
@@ -129,8 +148,10 @@ One might wonder why, if multi-threading is so beneficial, GPUs wouldn't be util
 # ╠═4a34664a-93e4-4835-ab9c-75dd10b9c483
 # ╠═2d44897c-8430-4d35-8e26-4e2b03fba411
 # ╠═e85546b9-03f0-4a1c-abd4-cd7a86d3fe80
+# ╟─6b45ebe1-fad6-46b7-b571-e392c377684c
 # ╟─4d35a592-5b22-44ef-8823-9025ce054643
 # ╠═390323c4-25a3-4048-b5e8-9ff99422c304
 # ╠═9cbb098b-e5b4-45c1-8eeb-d8b3a91d565b
 # ╟─6ccf4414-c76a-475d-8091-2aa03f268382
 # ╟─b88bea1c-73bd-40e5-8966-3e5af6c3a026
+# ╠═de54a3a1-21b6-4af7-97bf-fae1e45f9859
