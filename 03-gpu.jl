@@ -87,7 +87,7 @@ end
 md"""
 ## GPU-enabled distance transform use cases
 Distance transforms are ubiquitous in the fields of computer vision and image processing. From object recognition and path planning to deep learning and image segmentation, distance transforms are increasingly useful. DistanceTransforms.jl was created to give developers a simple, consistent API for implementing various distance transforms and to give end-users a seamless way to utilize distance transforms for various tasks, especially GPU-related tasks.
-One such example can be seen in the next tutorial on using distance transforms within various [loss functions](link...)
+One such example can be seen in the next tutorial on using distance transforms within various [loss functions](https://glassnotebook.io/nb/119)
 """
 
 # ╔═╡ Cell order:

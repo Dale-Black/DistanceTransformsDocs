@@ -135,7 +135,7 @@ end
 # ╔═╡ 5a1a3cb3-2073-45fb-9fd5-69bebbdd20fd
 md"""
 As you can see, for small arrays, the multi-threading functionality doesn't offer any improvements in speed (in fact, it limits it). But as the array size increases, the speed improvements also increase by order(s) of magnitude.
-One might wonder why, if multi-threading is so beneficial, GPUs wouldn't be utilized. For most libraries, many would answer that question with a demonstration of the added complexity when going from regular programming to GPU programming and why it's not practical, but DistanceTransforms.jl is a pure Julia package. This means that GPUs are readily available with minimal code change, so the next [tutorial](link ...) will showcase this exact use case and why both end-users and developers might benefit from this.
+One might wonder why, if multi-threading is so beneficial, GPUs wouldn't be utilized. For most libraries, many would answer that question with a demonstration of the added complexity when going from regular programming to GPU programming and why it's not practical, but DistanceTransforms.jl is a pure Julia package. This means that GPUs are readily available with minimal code change, so the next [tutorial](https://glassnotebook.io/nb/118) will showcase this exact use case and why both end-users and developers might benefit from this.
 """
 
 # ╔═╡ Cell order:
