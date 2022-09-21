@@ -34,7 +34,7 @@ TableOfContents()
 # ╔═╡ ede39bd3-1e20-4426-a518-abe2f574aa91
 md"""
 ## Multi-threaded distance transforms
-One of the advantages of a Julia-based distance transform library is how accessible something like multi-threading is for complex algorithms. The `SquaredEuclidean` distance transform is highly parallelizable and is set up to take advantage of multi-threaded hardware.
+One of the advantages of a Julia-based distance transform library is how accessible something like multi-threading is for complex algorithms. The `Felzenszwalb` distance transform is highly parallelizable and is set up to take advantage of multi-threaded hardware.
 """
 
 # ╔═╡ 735aa1eb-2ce8-4ae2-8181-76056aa560de
@@ -57,7 +57,7 @@ array = [
 bool_array = boolean_indicator(array)
 
 # ╔═╡ a0b300ff-2835-4440-a34d-cd1d3e5ed346
-tfm = SquaredEuclidean()
+tfm = Felzenszwalb()
 
 # ╔═╡ e38b8b56-a2cb-46a8-b5c8-9577a846ae1f
 sq_euc_transform = transform!(bool_array, tfm, threads)
@@ -126,7 +126,7 @@ let
 	f[1, 2] = Legend(
         f,
         [sc1, sc2],
-        ["Squared Euclidean","Squared Euclidean Threaded"];
+        ["Felzenszwalb","Felzenszwalb Threaded"];
         framevisible=false,
     )
 	f

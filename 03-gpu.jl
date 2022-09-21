@@ -60,7 +60,7 @@ if has_cuda_gpu()
 	dt = CuArray{Float32}(undef, size(array))
 	v = CUDA.ones(Int64, size(array))
 	z = CUDA.zeros(Float32, size(array) .+ 1)
-	tfm = DistanceTransforms.SquaredEuclidean()
+	tfm = Felzenszwalb()
 	
 	transform!(array, tfm; output=dt, v=v, z=z)
 else
@@ -78,7 +78,7 @@ else
 	dt = Array{Float32}(undef, size(array))
 	v = ones(Int64, size(array))
 	z = zeros(Float32, size(array) .+ 1)
-	tfm = DistanceTransforms.SquaredEuclidean()
+	tfm = Felzenszwalb()
 	
 	transform!(array, tfm; output=dt, v=v, z=z)
 end

@@ -50,7 +50,7 @@ Given some fake three dimensional array, lets apply a distance transform to this
 """
 
 # ╔═╡ ac4e2b4d-c6ab-4342-bb2a-afd05078ef04
-tfm = SquaredEuclidean()
+tfm = Felzenszwalb()
 
 # ╔═╡ 135f2c9a-a3d9-4477-b5af-3c95154b48f2
 y_dtm = transform(boolean_indicator(y), tfm)
@@ -71,8 +71,8 @@ begin
 	y2 = rand([0, 1], 5, 5, 3)
 	ŷ2 = rand([0, 1], 5, 5, 3)
 
-	y2_dtm = euclidean(y2)
-	ŷ2_dtm = euclidean(ŷ2)
+	y2_dtm = transform(boolean_indicator(y2), tfm)
+	ŷ2_dtm = transform(boolean_indicator(ŷ2), tfm)
 end
 
 # ╔═╡ ba878e0d-1102-488a-a9e5-b2e12ab4358d
@@ -103,7 +103,7 @@ for epoch in 1:max_epochs
 		xs, ys = xs |> gpu, ys |> gpu		
 		gs = Flux.gradient(ps) do
 			ŷs = model(xs)
-			# Apply distance transform using GPU compatible `SquaredEuclidean`
+			# Apply distance transform using GPU compatible `Felzenszwalb`
 			# Data will usually be 4D or 5D [x, y, (z), channel, batch]
 			ys_dtm = CuArray{Float32}(undef, size(ys))
 			ŷs_dtm = CuArray{Float32}(undef, size(ŷs))
@@ -112,7 +112,7 @@ for epoch in 1:max_epochs
 					for z in size(ys, 3)
 						bool_arr_gt = boolean_indicator(ys[:, :, z, c, b])
 						bool_arr_pred = boolean_indicator(ŷs[:, :, z, c, b])
-						tfm = SquaredEuclidean()
+						tfm = Felzenszwalb()
 						ys_dtm[:, :, z, c, b] = transform!(bool_arr_gt, tfm)
 						ŷs_dtm[:, :, z, c, b] = transform!(bool_arr_pred, tfm)
 					end

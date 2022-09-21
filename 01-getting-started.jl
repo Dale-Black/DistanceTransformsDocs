@@ -44,7 +44,7 @@ Distance transforms are an important part of many computer vision-related tasks.
 # ╔═╡ 97aad592-8362-48ce-87da-5ab3e8eb6f95
 md"""
 The quintessential distance transform operation in DistanceTransforms.jl is just a wrapper function combining the `feature_transform` and `distance_transform` functions from the excellent [ImageMorphology](https://github.com/JuliaImages/ImageMorphology.jl) package. 
-To utilize this in DistanceTransforms.jl all one must do is call `euclidean(x)`, where `x` is any boolean or integer array of ones and zeros
+To utilize this in DistanceTransforms.jl all one must do is call `transform(x, Maurer())`, where `x` is any boolean or integer array of ones and zeros and `Maurer()` is what specifies that this transform operation is using the one described in Maurer, et. al which was written in ImageMorphology.jl
 """
 
 # ╔═╡ 862747e5-e88f-47ab-bc97-f5a456738b22
@@ -55,7 +55,7 @@ array1 = [
 ]
 
 # ╔═╡ b9ba3bde-8779-4f3c-a3fb-ef157e121632
-euclidean(array1)
+transform(array1, Maurer())
 
 # ╔═╡ b2d06446-991c-4311-993f-87ddef5e8828
 md"""
@@ -67,7 +67,7 @@ We can see this easily using Makie.jl.
 heatmap(array1, colormap=:grays)
 
 # ╔═╡ ec3a90f1-f2d7-4d5a-8785-476073ee0079
-heatmap(euclidean(array1); colormap=:grays)
+heatmap(transform(array1, Maurer()); colormap=:grays)
 
 # ╔═╡ 01752ec8-9917-4254-8c92-daed39aeea39
 md"""
@@ -78,19 +78,19 @@ Let's examine two different options:
 
 # ╔═╡ be063896-415a-4178-8362-10073feadadf
 md"""
-### `Chamfer`
-This algorithm is based on the 3-4 Chamfer distance transform, as described by [Gunilla Borgefors](https://studentportalen.uu.se/uusp-filearea-tool/download.action?nodeId=214320&toolAttachmentId=64777)
+### `Borgefors`
+This algorithm is based on the 3-4 chamfer distance transform, as described by [Gunilla Borgefors](https://studentportalen.uu.se/uusp-filearea-tool/download.action?nodeId=214320&toolAttachmentId=64777)
 To get started we need to initialize the type of algorithm or `tfm` we want to use, then we run this through the `transform` function. We can again use `array1` for this task.
 """
 
 # ╔═╡ 37ed41d1-793d-4ec3-99e7-0b0a387b76f3
-tfm = Chamfer()
+tfm = Borgefors()
 
 # ╔═╡ d9857001-e4e4-4bc9-b211-a7ed21fd685f
 dt = zeros(size(array1))
 
 # ╔═╡ 90cef7f0-5437-4bc7-b0cc-78c89030351f
-chamfer_transform = transform(array1, dt, tfm)
+borgefors_transform = transform(array1, dt, tfm)
 
 # ╔═╡ c7c26a02-bad1-43b5-a119-3f8c4e53180c
 md"""
@@ -99,7 +99,7 @@ Notice that the distance computed to the nearest backgroun `0` element is no lon
 
 # ╔═╡ bf546f09-7604-4f11-8676-34a7ac571780
 md"""
-### `SquaredEuclidean`
+### `Felzenszwalb`
 This algorithm is based on the squared Euclidean distance transform, as described by [Felzenszwalb and
 Huttenlocher] (DOI: 10.4086/toc.2012.v008a019)
 We will use a similar approach to get started, with one extra step; the array must either be designated as a boolean indicator (meaning zeros correspond to background and ones correspond to foreground) or ignored. Most of the time the array should be considered a boolean indicator:
@@ -116,7 +116,7 @@ array2 = [
 array2_bool = boolean_indicator(array2)
 
 # ╔═╡ 00a4b3ed-ca0a-4c67-b400-cb9830dbbff2
-tfm2 = SquaredEuclidean()
+tfm2 = Felzenszwalb()
 
 # ╔═╡ d6b06775-2ded-4e15-9616-f3e4653d1396
 sq_euc_transform = transform(array2_bool, tfm2)
@@ -130,7 +130,7 @@ It should be clear to see that the `transform` returns the Euclidean distance, j
 euc_transform = sqrt.(sq_euc_transform)
 
 # ╔═╡ 46a38900-bf33-4f5c-a6e3-14f961403185
-euc_transform ≈ euclidean(array2)
+euc_transform ≈ transform(array2, Maurer())
 
 # ╔═╡ Cell order:
 # ╟─32a932f4-cade-434f-a489-282bb909a04c

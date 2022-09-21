@@ -32,19 +32,19 @@ md"""
 
 # ╔═╡ 61563bfb-6dcf-4c04-b26e-6b3db787ac36
 md"""
-## Chamfer
+## Borgefors
 """
 
 # ╔═╡ a4642582-2fa3-40c8-9487-b80bd6669b7a
-@doc Chamfer
+@doc Borgefors
 
 # ╔═╡ 45876212-a0c4-48f6-851a-96c1bfed6130
 md"""
-## SquaredEuclidean
+## Felzenszwalb
 """
 
 # ╔═╡ 70b218bf-7bc9-4812-9a9c-b330a9e90841
-@doc SquaredEuclidean
+@doc Felzenszwalb
 
 # ╔═╡ e81cd30d-9c5a-4b62-9963-680163028dde
 md"""
@@ -64,11 +64,11 @@ md"""
 
 # ╔═╡ 4a2d7b81-0837-47b4-abc7-135549036dbb
 md"""
-## euclidean
+## Maurer
 """
 
 # ╔═╡ 675a8ae4-9152-4e77-80eb-b39dc97e04b0
-@doc euclidean
+@doc Maurer
 
 # ╔═╡ c3ab2951-b998-4b4f-afbc-20dcacd4bf18
 md"""
@@ -116,12 +116,12 @@ exported_names
 # ╟─a4642582-2fa3-40c8-9487-b80bd6669b7a
 # ╟─45876212-a0c4-48f6-851a-96c1bfed6130
 # ╟─70b218bf-7bc9-4812-9a9c-b330a9e90841
+# ╟─4a2d7b81-0837-47b4-abc7-135549036dbb
+# ╟─675a8ae4-9152-4e77-80eb-b39dc97e04b0
 # ╟─e81cd30d-9c5a-4b62-9963-680163028dde
 # ╟─64b552f7-30a8-4dae-8b2f-ec17bc89542c
 # ╟─bbd04e76-a70a-4b5d-a751-91e1ea0505e6
 # ╟─59ec7e38-76e2-4a45-9701-f82eae268205
-# ╟─4a2d7b81-0837-47b4-abc7-135549036dbb
-# ╟─675a8ae4-9152-4e77-80eb-b39dc97e04b0
 # ╟─c3ab2951-b998-4b4f-afbc-20dcacd4bf18
 # ╟─00802ec0-a9bf-4930-ba89-834437e9c0af
 # ╟─e6d7c77d-a946-44f8-97c6-4f493aa76446

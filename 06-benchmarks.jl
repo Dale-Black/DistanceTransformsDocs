@@ -77,7 +77,7 @@ begin
 		
 		# EDT
 		f = Bool.(rand([0, 1], n, n))
-		edt = @benchmark euclidean($f)
+		edt = @benchmark transform($f, $Maurer())
 		
 		append!(edt_mean_2D, BenchmarkTools.mean(edt).time)
 		append!(edt_std_2D, BenchmarkTools.std(edt).time)
@@ -85,7 +85,7 @@ begin
 		# SEDT
 		f = Bool.(rand([0, 1], n, n))
 		b_f = boolean_indicator(f)
-		tfm = SquaredEuclidean()
+		tfm = Felzenszwalb()
 		sedt = @benchmark DistanceTransforms.transform($b_f, $tfm)
 		
 		append!(sedt_mean_2D, BenchmarkTools.mean(sedt).time)
@@ -111,7 +111,6 @@ begin
 		f = Bool.(rand([0, 1], n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = DepthFirstEx()
 		sedt_threaded_depth = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -122,7 +121,6 @@ begin
 		f = Bool.(rand([0, 1], n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = NonThreadedEx()
 		sedt_threaded_nonthread = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -133,7 +131,6 @@ begin
 		f = Bool.(rand([0, 1], n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = WorkStealingEx()
 		sedt_threaded_worksteal = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -145,7 +142,6 @@ begin
 			f = Bool.(rand([0, 1], n, n))
 			b_f = CuArray(boolean_indicator(f))
 			output, v, z = CUDA.zeros(size(f)), CUDA.ones(Int32, size(f)), CUDA.ones(size(f) .+ 1)
-			tfm = SquaredEuclidean()
 			sedt_gpu = @benchmark DistanceTransforms.transform!($b_f, $tfm; output=$output, v=$v, z=$z)
 			
 			append!(sedt_gpu_mean, BenchmarkTools.mean(sedt_gpu).time)
@@ -176,14 +172,14 @@ let
 		f[1, 2] = Legend(
 	        f,
 	        [sc1, sc2, sc3, sc4, sc5, sc6, sc7],
-	        ["Euclidean", "Squared Euclidean", "Squared Euclidean In-Place", "Squared Euclidean Threaded", "Squared Euclidean DepthFirstEx", "Squared Euclidean NonThreadedEx", "Squared Euclidean WorkStealingEx", "Squared Euclidean GPU"];
+	        ["Maurer", "Felzenszwalb", "Felzenszwalb In-Place", "Felzenszwalb Threaded", "Felzenszwalb DepthFirstEx", "Felzenszwalb NonThreadedEx", "Felzenszwalb WorkStealingEx", "Felzenszwalb GPU"];
 	        framevisible=false,
 	    )
 	else
 			f[1, 2] = Legend(
 	        f,
 	        [sc1, sc2, sc3, sc4, sc5, sc6, sc7],
-	        ["Euclidean", "Squared Euclidean", "Squared Euclidean In-Place", "Squared Euclidean Threaded", "Squared Euclidean DepthFirstEx", "Squared Euclidean NonThreadedEx", "Squared Euclidean WorkStealingEx"];
+	        ["Maurer", "Felzenszwalb", "Felzenszwalb In-Place", "Felzenszwalb Threaded", "Felzenszwalb DepthFirstEx", "Felzenszwalb NonThreadedEx", "Felzenszwalb WorkStealingEx"];
 	        framevisible=false,
 	    )
 	end
@@ -231,7 +227,7 @@ begin
 		
 		# EDT
 		f = Bool.(rand([0, 1], n, n, n))
-		edt = @benchmark euclidean($f)
+		edt = @benchmark transform($f, $Maurer())
 		
 		append!(edt_mean_3D, BenchmarkTools.mean(edt).time)
 		append!(edt_std_3D, BenchmarkTools.std(edt).time)
@@ -239,7 +235,7 @@ begin
 		# SEDT
 		f = Bool.(rand([0, 1], n, n, n))
 		b_f = boolean_indicator(f)
-		tfm = SquaredEuclidean()
+		tfm = Felzenszwalb()
 		sedt = @benchmark DistanceTransforms.transform($b_f, $tfm)
 		
 		append!(sedt_mean_3D, BenchmarkTools.mean(sedt).time)
@@ -265,7 +261,6 @@ begin
 		f = Bool.(rand([0, 1], n, n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = DepthFirstEx()
 		sedt_threaded_depth = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -276,7 +271,6 @@ begin
 		f = Bool.(rand([0, 1], n, n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = NonThreadedEx()
 		sedt_threaded_nonthread = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -287,7 +281,6 @@ begin
 		f = Bool.(rand([0, 1], n, n, n))
 		b_f = boolean_indicator(f)
 		output, v, z = zeros(size(f)), ones(Int32, size(f)), ones(size(f) .+ 1)
-		tfm = SquaredEuclidean()
 		ex = WorkStealingEx()
 		sedt_threaded_worksteal = @benchmark DistanceTransforms.transform!($b_f, $tfm, $ex; output=$output, v=$v, z=$z)
 		
@@ -299,7 +292,6 @@ begin
 			f = Bool.(rand([0, 1], n, n, n))
 			b_f = CuArray(boolean_indicator(f))
 			output, v, z = CUDA.zeros(size(f)), CUDA.ones(Int32, size(f)), CUDA.ones(size(f) .+ 1)
-			tfm = SquaredEuclidean()
 			sedt_gpu_3D = @benchmark DistanceTransforms.transform!($b_f, $tfm; output=$output, v=$v, z=$z)
 			
 			append!(sedt_gpu_mean_3D, BenchmarkTools.mean(sedt_gpu_3D).time)
@@ -330,14 +322,14 @@ let
 		f[1, 2] = Legend(
 	        f,
 	        [sc1, sc2, sc3, sc4, sc5, sc6, sc7],
-	        ["Euclidean", "Squared Euclidean", "Squared Euclidean In-Place", "Squared Euclidean Threaded", "Squared Euclidean DepthFirstEx", "Squared Euclidean NonThreadedEx", "Squared Euclidean WorkStealingEx", "Squared Euclidean GPU"];
+	        ["Maurer", "Felzenszwalb", "Felzenszwalb In-Place", "Felzenszwalb Threaded", "Felzenszwalb DepthFirstEx", "Felzenszwalb NonThreadedEx", "Felzenszwalb WorkStealingEx", "Felzenszwalb GPU"];
 	        framevisible=false,
 	    )
 	else
 			f[1, 2] = Legend(
 	        f,
 	        [sc1, sc2, sc3, sc4, sc5, sc6, sc7],
-	        ["Euclidean", "Squared Euclidean", "Squared Euclidean In-Place", "Squared Euclidean Threaded", "Squared Euclidean DepthFirstEx", "Squared Euclidean NonThreadedEx", "Squared Euclidean WorkStealingEx"];
+	        ["Maurer", "Felzenszwalb", "Felzenszwalb In-Place", "Felzenszwalb Threaded", "Felzenszwalb DepthFirstEx", "Felzenszwalb NonThreadedEx", "Felzenszwalb WorkStealingEx"];
 	        framevisible=false,
 	    )
 	end
